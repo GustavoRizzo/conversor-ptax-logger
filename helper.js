@@ -1,6 +1,21 @@
+let logTemplate = null;
+
+// Carregar template externo (só uma vez)
+fetch("log-template.html")
+    .then(res => res.text())
+    .then(html => {
+        const container = document.createElement("div");
+        container.innerHTML = html.trim();
+        logTemplate = container.querySelector("#log-template");
+    });
+
 // Função para adicionar um log
 function addLog(value) {
-    // Remover mensagem de lista vazia se existir
+    if (!logTemplate) {
+        console.error("Template ainda não carregado");
+        return;
+    }
+
     if (logList.querySelector('.empty-logs')) {
         logList.innerHTML = '';
     }
@@ -8,13 +23,12 @@ function addLog(value) {
     const now = new Date();
     const timeString = now.toLocaleTimeString();
 
-    const li = document.createElement('li');
-    li.innerHTML = `
-                    <span class="log-value">${value}</span>
-                    <span class="log-time">${timeString}</span>
-                    <button class="delete-log" title="Apagar log" style="background:#e74c3c;color:#fff;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;margin-left:10px;">Apagar</button>
-                `;
+    // Clonar template
+    const li = logTemplate.content.firstElementChild.cloneNode(true);
+    li.querySelector('.log-value').textContent = value;
+    li.querySelector('.log-time').textContent = timeString;
     li.style.backgroundColor = getRandomTranslucentColor();
+
     li.querySelector('.delete-log').addEventListener('click', function () {
         li.remove();
         if (logList.children.length === 0) {
@@ -23,11 +37,10 @@ function addLog(value) {
         saveLogsToStorage();
     });
 
-    logList.prepend(li); // Adicionar no início da lista
-
-    // Salvar logs no localStorage
+    logList.prepend(li);
     saveLogsToStorage();
 }
+
 
 // Função para salvar logs no localStorage
 function saveLogsToStorage() {
