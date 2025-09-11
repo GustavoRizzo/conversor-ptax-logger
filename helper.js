@@ -14,6 +14,7 @@ function addLog(value) {
                     <span class="log-time">${timeString}</span>
                     <button class="delete-log" title="Apagar log" style="background:#e74c3c;color:#fff;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;margin-left:10px;">Apagar</button>
                 `;
+    li.style.backgroundColor = getRandomTranslucentColor();
     li.querySelector('.delete-log').addEventListener('click', function () {
         li.remove();
         if (logList.children.length === 0) {
@@ -42,6 +43,36 @@ function saveLogsToStorage() {
     localStorage.setItem('inputLogs', JSON.stringify(logs));
 }
 
+// Gera uma cor RGBA aleatória com baixa opacidade, sem repetir a última cor
+let lastColorIdx = null;
+function getRandomTranslucentColor() {
+    const colors = [
+        [52, 152, 219],   // azul
+        [46, 204, 113],   // verde
+        [241, 196, 15],   // amarelo
+        [231, 76, 60],    // vermelho
+        [155, 89, 182],   // roxo
+        [230, 126, 34],   // laranja
+        [26, 188, 156],   // turquesa
+        [243, 156, 18],   // laranja escuro
+        [135, 206, 250],  // azul claro
+        [144, 238, 144],  // verde claro
+        [255, 99, 132],   // vermelho vibrante
+        [218, 112, 214],  // roxo claro
+        [241, 169, 160],  // rosa claro
+        [22, 160, 133],   // verde água
+        [236, 112, 99],   // vermelho claro
+        [244, 208, 63]    // amarelo claro
+    ];
+    let idx;
+    do {
+        idx = Math.floor(Math.random() * colors.length);
+    } while (idx === lastColorIdx && colors.length > 1);
+    lastColorIdx = idx;
+    const [r, g, b] = colors[idx];
+    return `rgba(${r},${g},${b},0.18)`;
+}
+
 
 // Função para carregar logs do localStorage
 function loadLogsFromStorage() {
@@ -65,6 +96,7 @@ function loadLogsFromStorage() {
                 <span class="log-time">${log.time}</span>
                 <button class="delete-log" title="Apagar log" style="background:#e74c3c;color:#fff;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;margin-left:10px;">Apagar</button>
             `;
+            li.style.backgroundColor = getRandomTranslucentColor();
             li.querySelector('.delete-log').addEventListener('click', function () {
                 li.remove();
                 if (logList.children.length === 0) {
