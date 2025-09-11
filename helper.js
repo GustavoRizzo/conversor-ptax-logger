@@ -47,15 +47,18 @@ function saveLogsToStorage() {
 function loadLogsFromStorage() {
     const savedLogs = localStorage.getItem('inputLogs');
     if (savedLogs) {
-        const logs = JSON.parse(savedLogs);
-
-        // Limpar mensagem de lista vazia
+        let logs = JSON.parse(savedLogs);
         if (logList.querySelector('.empty-logs')) {
             logList.innerHTML = '';
         }
-
-        // Adicionar logs salvos (em ordem reversa para manter a cronologia)
-        logs.reverse().forEach(log => {
+        // Ordenar por horário decrescente (mais recente primeiro)
+        logs = logs.sort((a, b) => {
+            // Converter para Date para garantir ordenação correta
+            const dateA = new Date('1970-01-01T' + a.time);
+            const dateB = new Date('1970-01-01T' + b.time);
+            return dateB - dateA;
+        });
+        logs.forEach(log => {
             const li = document.createElement('li');
             li.innerHTML = `
                 <span class="log-value">${log.value}</span>
