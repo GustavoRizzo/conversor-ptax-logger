@@ -70,11 +70,11 @@ function addLogConversao(conversao) {
     const li = logConversaoTemplate.content.firstElementChild.cloneNode(true);
     // Preencher campos do template
     li.querySelector('.log-moeda').textContent = conversao.modela;
-    li.querySelector('.log-data').textContent = conversao.dataCotacao;
-    li.querySelector('.log-venda').textContent = `Venda: ${conversao.contacaoRealMoeda}`;
-    li.querySelector('.log-venda-inversa').textContent = `Venda inversa: ${conversao.contacaoRealMoedaInversa.toFixed(6)}`;
-    li.querySelector('.log-compra').textContent = `Compra: ${conversao.contacaoMoedaReal}`;
-    li.querySelector('.log-compra-inversa').textContent = `Compra inversa: ${conversao.contacaoMoedaRealInversa.toFixed(6)}`;
+    li.querySelector('.log-data').textContent = conversao.dataCotacao.split(' ')[0];
+    li.querySelector('.log-venda').textContent = conversao.contacaoRealMoeda;
+    li.querySelector('.log-venda-inversa').textContent = conversao.contacaoRealMoedaInversa.toFixed(6);
+    li.querySelector('.log-compra').textContent = conversao.contacaoMoedaReal;
+    li.querySelector('.log-compra-inversa').textContent = conversao.contacaoMoedaRealInversa.toFixed(6);
     li.querySelector('.log-time').textContent = timeString;
     li.style.backgroundColor = getRandomTranslucentColor();
 

@@ -1,20 +1,30 @@
 <template id="log-conversao-template">
-    <li>
-        <div class="log-conversao-main">
-            <span class="log-moeda"></span>
-            <span class="log-data"></span>
+    <li style="background: #f8fafc; border-radius: 8px; box-shadow: 0 2px 8px rgba(44,62,80,0.07); padding: 18px 16px; margin-bottom: 10px; list-style: none;">
+        <div class="content-container">
+            <div style="margin-bottom: 16px;">
+                <h3 style="margin:0; font-size:1.15em; font-weight:600; color:#34495e;">
+                    Conversão Real <span class="log-moeda"></span> <span class="log-data"></span>
+                </h3>
+            </div>
+            <div style="display: flex; gap: 32px;">
+                <div style="flex:1; background: #fff; border-radius: 6px; border: 1px solid #eee; padding: 12px 16px;">
+                    <h4>Real &rarr; <span class="log-moeda"></span></h4>
+                    <strong>Venda:</strong> <span class="log-venda"></span><br>
+                    <strong>Venda inversa:</strong> <span class="log-venda-inversa"></span>
+                </div>
+                <div style="flex:1; background: #fff; border-radius: 6px; border: 1px solid #eee; padding: 12px 16px;">
+                    <strong>Compra:</strong> <span class="log-compra"></span><br>
+                    <strong>Compra inversa:</strong> <span class="log-compra-inversa"></span>
+                </div>
+            </div>
         </div>
-        <div class="log-conversao-valores">
-            <span class="log-venda"></span>
-            <span class="log-venda-inversa"></span>
-            <span class="log-compra"></span>
-            <span class="log-compra-inversa"></span>
+        <div class="delete-container">
+            <button class="delete-log"
+                    title="Apagar log"
+                    style="background:#e74c3c;color:#fff;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;margin-left:10px;float:right;">
+                Apagar
+            </button>
+            <span class="log-time" style="float:right; font-size:12px; color:#7f8c8d;"></span>
         </div>
-        <span class="log-time"></span>
-        <button class="delete-log"
-                title="Apagar log"
-                style="background:#e74c3c;color:#fff;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;margin-left:10px;">
-            Apagar
-        </button>
     </li>
 </template>
