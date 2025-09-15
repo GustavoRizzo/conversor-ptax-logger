@@ -1,141 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logger de Input</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f5f7fa;
-            padding: 20px;
-            color: #333;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 25px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #2c3e50;
-        }
-
-        .input-container {
-            margin-bottom: 30px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #34495e;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-
-        input[type="text"]:focus {
-            border-color: #3498db;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-        }
-
-        .logs-container {
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-
-        .logs-title {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .logs-title h2 {
-            color: #2c3e50;
-        }
-
-        #clearLogs {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        #clearLogs:hover {
-            background-color: #c0392b;
-        }
-
-        #logList {
-            list-style-type: none;
-            max-height: 400px;
-            overflow-y: auto;
-            border: 1px solid #eee;
-            border-radius: 6px;
-            padding: 10px;
-        }
-
-        #logList li {
-            padding: 10px 15px;
-            border-bottom: 1px solid #f1f1f1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        #logList li:last-child {
-            border-bottom: none;
-        }
-
-        .log-time {
-            font-size: 12px;
-            color: #7f8c8d;
-        }
-
-        .log-value {
-            font-weight: 500;
-            color: #2c3e50;
-        }
-
-        .empty-logs {
-            text-align: center;
-            color: #7f8c8d;
-            font-style: italic;
-            padding: 20px;
-        }
-
-        .status {
-            text-align: right;
-            margin-top: 5px;
-            font-size: 12px;
-            color: #7f8c8d;
-            height: 18px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <script src="./helper.js" defer></script>
 </head>
+
 <body>
     <div class="container">
         <h1>Logger de Input</h1>
@@ -159,7 +32,7 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const textInput = document.getElementById('textInput');
             const logList = document.getElementById('logList');
             const clearLogsBtn = document.getElementById('clearLogs');
@@ -171,7 +44,7 @@
             loadLogsFromStorage();
 
             // Adicionar evento de input para detectar digitação
-            textInput.addEventListener('input', function() {
+            textInput.addEventListener('input', function () {
                 statusEl.textContent = "Digitando...";
 
                 // Limpar o timeout anterior se existir
@@ -188,67 +61,8 @@
                 }, 300);
             });
 
-            // Função para adicionar um log
-            function addLog(value) {
-                // Remover mensagem de lista vazia se existir
-                if (logList.querySelector('.empty-logs')) {
-                    logList.innerHTML = '';
-                }
-
-                const now = new Date();
-                const timeString = now.toLocaleTimeString();
-
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <span class="log-value">${value}</span>
-                    <span class="log-time">${timeString}</span>
-                `;
-
-                logList.prepend(li); // Adicionar no início da lista
-
-                // Salvar logs no localStorage
-                saveLogsToStorage();
-            }
-
-            // Função para salvar logs no localStorage
-            function saveLogsToStorage() {
-                const logs = [];
-                document.querySelectorAll('#logList li').forEach(li => {
-                    if (!li.classList.contains('empty-logs')) {
-                        logs.push({
-                            value: li.querySelector('.log-value').textContent,
-                            time: li.querySelector('.log-time').textContent
-                        });
-                    }
-                });
-                localStorage.setItem('inputLogs', JSON.stringify(logs));
-            }
-
-            // Função para carregar logs do localStorage
-            function loadLogsFromStorage() {
-                const savedLogs = localStorage.getItem('inputLogs');
-                if (savedLogs) {
-                    const logs = JSON.parse(savedLogs);
-
-                    // Limpar mensagem de lista vazia
-                    if (logList.querySelector('.empty-logs')) {
-                        logList.innerHTML = '';
-                    }
-
-                    // Adicionar logs salvos (em ordem reversa para manter a cronologia)
-                    logs.reverse().forEach(log => {
-                        const li = document.createElement('li');
-                        li.innerHTML = `
-                            <span class="log-value">${log.value}</span>
-                            <span class="log-time">${log.time}</span>
-                        `;
-                        logList.appendChild(li);
-                    });
-                }
-            }
-
             // Evento para limpar os logs
-            clearLogsBtn.addEventListener('click', function() {
+            clearLogsBtn.addEventListener('click', function () {
                 if (confirm('Tem certeza que deseja limpar todos os logs?')) {
                     logList.innerHTML = '<li class="empty-logs">Nenhum registro ainda. Digite algo no campo acima.</li>';
                     localStorage.removeItem('inputLogs');
@@ -257,7 +71,9 @@
 
             // Focar no input quando a página carregar
             textInput.focus();
+
         });
     </script>
 </body>
+
 </html>
