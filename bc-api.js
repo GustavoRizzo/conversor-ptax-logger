@@ -159,3 +159,8 @@ class BancoCentralAPI {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = BancoCentralAPI;
 }
+
+// Torna a classe acessível globalmente no navegador
+if (typeof window !== 'undefined') {
+    window.BancoCentralAPI = BancoCentralAPI;
+}

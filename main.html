@@ -7,6 +7,7 @@
     <title>Logger de Input</title>
     <link rel="stylesheet" href="style.css">
     <script src="./helper.js" defer></script>
+    <script src="bc-api.js"></script>
 </head>
 
 <body>
@@ -71,6 +72,9 @@
 
             // Focar no input quando a página carregar
             textInput.focus();
+
+            // Invocar a função processarCotacaoMoeda e mostrar resultado no console
+            processarCotacaoMoeda('USD', '09-15-2025').then(console.log);
         });
     </script>
 </body>

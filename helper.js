@@ -121,3 +121,49 @@ function loadLogsFromStorage() {
         });
     }
 }
+
+// Função para processar cotação de moeda PTAX
+async function processarCotacaoMoeda(codigoMoeda, dataCotacao) {
+    try {
+        // Instanciar a API do Banco Central (browser)
+        if (typeof window.BancoCentralAPI !== 'function') {
+            throw new Error('BancoCentralAPI não está disponível. Certifique-se de incluir bc-api.js via <script> no HTML.');
+        }
+        const bcAPI = new window.BancoCentralAPI();
+
+        // Obter a cotação PTAX usando a API
+        const resultado = await bcAPI.getCotacaoMoedaDiaPTAX(codigoMoeda, dataCotacao);
+
+        if (!resultado.success) {
+            return resultado;
+        }
+
+        const cotacaoPTAX = resultado.data;
+        const cotacaoRealMoeda = parseFloat(cotacaoPTAX.cotacaoVenda);
+        const cotacaoRealMoedaInversa = 1 / cotacaoRealMoeda;
+        const cotacaoMoedaReal = parseFloat(cotacaoPTAX.cotacaoCompra);
+        const cotacaoMoedaRealInversa = 1 / cotacaoMoedaReal;
+
+        return {
+            success: true,
+            data: {
+                modela: codigoMoeda,
+                dataCotacao: cotacaoPTAX.dataHoraCotacao,
+                contacaoRealMoeda: cotacaoRealMoeda,
+                contacaoRealMoedaInversa: cotacaoRealMoedaInversa,
+                contacaoMoedaReal: cotacaoMoedaReal,
+                contacaoMoedaRealInversa: cotacaoMoedaRealInversa,
+                dadosOriginais: cotacaoPTAX
+            },
+            timestamp: resultado.timestamp,
+            message: resultado.message
+        };
+    } catch (error) {
+        console.error('Erro ao processar cotação:', error);
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        };
+    }
+}
