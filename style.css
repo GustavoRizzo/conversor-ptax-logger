@@ -1,3 +1,41 @@
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-right: 32px;
+}
+.input-group:last-child {
+    margin-right: 0;
+}
+.input-fields {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.input-fields label {
+    font-weight: 600;
+    color: #34495e;
+    margin-right: 8px;
+}
+
+.input-fields select,
+.input-fields input[type="date"] {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    background: #fff;
+    transition: border-color 0.3s;
+}
+
+.input-fields select:focus,
+.input-fields input[type="date"]:focus {
+    border-color: #3498db;
+    outline: none;
+}
 * {
     box-sizing: border-box;
     margin: 0;
@@ -28,6 +66,15 @@ h1 {
 
 .input-container {
     margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    align-content: stretch;
+    background: #f0f4fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(44,62,80,0.07);
+    padding: 24px 16px 18px 16px;
 }
 
 label {

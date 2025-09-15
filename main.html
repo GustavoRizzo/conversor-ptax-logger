@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logger de Input</title>
+    <title>Conversor de Moeda Ptax</title>
     <link rel="stylesheet" href="style.css">
     <script src="./helper.js" defer></script>
     <script src="bc-api.js"></script>
@@ -12,27 +12,29 @@
 
 <body>
     <div class="container">
-        <h1>Logger de Input</h1>
+    <h1>Conversor de Moeda Ptax</h1>
 
         <div class="input-container">
-            <label for="textInput">Digite algo:</label>
-            <input type="text" id="textInput" placeholder="Comece a digitar...">
-            <div style="margin-top:16px;">
-                <label for="moedaCotacao">Moeda:</label>
-                <select id="moedaCotacao" style="margin-left:8px;">
-                    <option value="AUD">Dólar australiano (AUD)</option>
-                    <option value="CAD">Dólar canadense (CAD)</option>
-                    <option value="CHF">Franco suíço (CHF)</option>
-                    <option value="DKK">Coroa dinamarquesa (DKK)</option>
-                    <option value="EUR">Euro (EUR)</option>
-                    <option value="GBP">Libra Esterlina (GBP)</option>
-                    <option value="JPY">Iene (JPY)</option>
-                    <option value="NOK">Coroa norueguesa (NOK)</option>
-                    <option value="SEK">Coroa sueca (SEK)</option>
-                    <option value="USD" selected>Dólar dos Estados Unidos (USD)</option>
-                </select>
-                <label for="dataCotacao" style="margin-left:16px;">Data da cotação:</label>
-                <input type="date" id="dataCotacao" value="2025-09-15" style="margin-left:8px;">
+            <div class="input-fields" style="margin-top:0;">
+                <div class="input-group">
+                    <label for="moedaCotacao">Moeda:</label>
+                    <select id="moedaCotacao">
+                        <option value="AUD">Dólar australiano (AUD)</option>
+                        <option value="CAD">Dólar canadense (CAD)</option>
+                        <option value="CHF">Franco suíço (CHF)</option>
+                        <option value="DKK">Coroa dinamarquesa (DKK)</option>
+                        <option value="EUR">Euro (EUR)</option>
+                        <option value="GBP">Libra Esterlina (GBP)</option>
+                        <option value="JPY">Iene (JPY)</option>
+                        <option value="NOK">Coroa norueguesa (NOK)</option>
+                        <option value="SEK">Coroa sueca (SEK)</option>
+                        <option value="USD" selected>Dólar dos Estados Unidos (USD)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="dataCotacao">Data da cotação:</label>
+                    <input type="date" id="dataCotacao">
+                </div>
             </div>
             <div class="status" id="status"></div>
         </div>
@@ -51,61 +53,53 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Definir data padrão para hoje
+            const hoje = new Date();
+            const yyyy = hoje.getFullYear();
+            const mm = String(hoje.getMonth() + 1).padStart(2, '0');
+            const dd = String(hoje.getDate()).padStart(2, '0');
             const dataInput = document.getElementById('dataCotacao');
+            dataInput.value = `${yyyy}-${mm}-${dd}`;
             const moedaInput = document.getElementById('moedaCotacao');
-            const textInput = document.getElementById('textInput');
             const logList = document.getElementById('logList');
             const clearLogsBtn = document.getElementById('clearLogs');
             const statusEl = document.getElementById('status');
 
-            let timeoutId = null;
-
             // Carregar logs do localStorage se existirem
             loadLogsFromStorage();
-
-            // Adicionar evento de input para detectar digitação
-            textInput.addEventListener('input', function () {
-                statusEl.textContent = "Digitando...";
-
-                // Limpar o timeout anterior se existir
-                if (timeoutId) {
-                    clearTimeout(timeoutId);
-                }
-
-                // Configurar um novo timeout para 300ms
-                timeoutId = setTimeout(() => {
-                    if (textInput.value.trim() !== '') {
-                        addLog(textInput.value);
-                    }
-                    statusEl.textContent = "";
-                }, 300);
-            });
 
             // Evento para limpar os logs
             clearLogsBtn.addEventListener('click', function () {
                 if (confirm('Tem certeza que deseja limpar todos os logs?')) {
-                    logList.innerHTML = '<li class="empty-logs">Nenhum registro ainda. Digite algo no campo acima.</li>';
+                    logList.innerHTML = '<li class="empty-logs">Nenhum registro ainda. Selecione moeda e data acima.';
                     localStorage.removeItem('inputLogs');
                 }
             });
 
-            // Focar no input quando a página carregar
-            textInput.focus();
-
-            // Chama processarCotacaoMoeda ao alterar a data
+            // Chama processarCotacaoMoeda ao alterar a data ou moeda
             function chamarCotacao() {
                 const val = dataInput.value;
                 const moeda = moedaInput.value;
                 // Converter de yyyy-mm-dd para mm-dd-yyyy
                 const [ano, mes, dia] = val.split('-');
                 const dataFormatada = `${mes}-${dia}-${ano}`;
-                processarCotacaoMoeda(moeda, dataFormatada).then(console.log);
+                processarCotacaoMoeda(moeda, dataFormatada).then(result => {
+                    console.log(result);
+                    let textoLog;
+                    if (result.success && result.data) {
+                        textoLog = `Cotação ${moeda} em ${val}: venda=${result.data.contacaoRealMoeda} compra=${result.data.contacaoMoedaReal}`;
+                    } else {
+                        textoLog = `Falha ao obter cotação de ${moeda} em ${val}: ${result.message}`;
+                    }
+                    addLog(textoLog);
+                });
             }
             dataInput.addEventListener('change', chamarCotacao);
             moedaInput.addEventListener('change', chamarCotacao);
 
-            // Invocar a função processarCotacaoMoeda e mostrar resultado no console
-            processarCotacaoMoeda('USD', '09-15-2025').then(console.log);
+            // Faz a invocação inicial
+            chamarCotacao();
+
         });
     </script>
 </body>
