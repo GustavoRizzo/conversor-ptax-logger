@@ -95,10 +95,25 @@ function saveLogsToStorage() {
     const logs = [];
     document.querySelectorAll('#logList li').forEach(li => {
         if (!li.classList.contains('empty-logs')) {
-            logs.push({
-                value: li.querySelector('.log-value').textContent,
-                time: li.querySelector('.log-time').textContent
-            });
+            // Detecta se é um log de conversão ou log de texto
+            if (li.querySelector('.log-moeda')) {
+                logs.push({
+                    moeda: li.querySelector('.log-moeda').textContent,
+                    dataCotacao: li.querySelector('.log-data').textContent,
+                    venda: li.querySelector('.log-venda').textContent,
+                    vendaInversa: li.querySelector('.log-venda-inversa').textContent,
+                    compra: li.querySelector('.log-compra').textContent,
+                    compraInversa: li.querySelector('.log-compra-inversa').textContent,
+                    time: li.querySelector('.log-time').textContent,
+                    tipo: 'conversao'
+                });
+            } else {
+                logs.push({
+                    value: li.querySelector('.log-value').textContent,
+                    time: li.querySelector('.log-time').textContent,
+                    tipo: 'texto'
+                });
+            }
         }
     });
     localStorage.setItem('inputLogs', JSON.stringify(logs));
