@@ -9,6 +9,14 @@ fetch("log-template.html")
         container.innerHTML = html.trim();
         logTemplate = container.querySelector("#log-template");
     });
+fetch("log-conversao-template.html")
+    .then(res => res.text())
+    .then(html => {
+        const container = document.createElement("div");
+        container.innerHTML = html.trim();
+        logConversaoTemplate = container.querySelector("#log-conversao-template");
+    });
+
 
 // Função para adicionar um log
 function addLog(value) {
@@ -45,7 +53,8 @@ function addLog(value) {
 
 // Função para adicionar um log de conversão de moeda
 function addLogConversao(conversao) {
-    if (!logTemplate) {
+    console.log("Adicionando log de conversão:", conversao);
+    if (!logConversaoTemplate) {
         console.error("Template ainda não carregado");
         return;
     }
@@ -57,14 +66,15 @@ function addLogConversao(conversao) {
     const now = new Date();
     const timeString = now.toLocaleTimeString();
 
-    // Monta o texto do log de conversão
-    let texto = `Cotação ${conversao.modela} em ${conversao.dataCotacao}: ` +
-        `venda=${conversao.contacaoRealMoeda} (1/${conversao.contacaoRealMoedaInversa.toFixed(6)}) | ` +
-        `compra=${conversao.contacaoMoedaReal} (1/${conversao.contacaoMoedaRealInversa.toFixed(6)})`;
-
     // Clonar template
-    const li = logTemplate.content.firstElementChild.cloneNode(true);
-    li.querySelector('.log-value').textContent = texto;
+    const li = logConversaoTemplate.content.firstElementChild.cloneNode(true);
+    // Preencher campos do template
+    li.querySelector('.log-moeda').textContent = conversao.modela;
+    li.querySelector('.log-data').textContent = conversao.dataCotacao;
+    li.querySelector('.log-venda').textContent = `Venda: ${conversao.contacaoRealMoeda}`;
+    li.querySelector('.log-venda-inversa').textContent = `Venda inversa: ${conversao.contacaoRealMoedaInversa.toFixed(6)}`;
+    li.querySelector('.log-compra').textContent = `Compra: ${conversao.contacaoMoedaReal}`;
+    li.querySelector('.log-compra-inversa').textContent = `Compra inversa: ${conversao.contacaoMoedaRealInversa.toFixed(6)}`;
     li.querySelector('.log-time').textContent = timeString;
     li.style.backgroundColor = getRandomTranslucentColor();
 
