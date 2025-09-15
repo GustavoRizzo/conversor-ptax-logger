@@ -1,3 +1,4 @@
+
 let logTemplate = null;
 
 // Carregar template externo (só uma vez)
@@ -41,6 +42,43 @@ function addLog(value) {
     saveLogsToStorage();
 }
 
+
+// Função para adicionar um log de conversão de moeda
+function addLogConversao(conversao) {
+    if (!logTemplate) {
+        console.error("Template ainda não carregado");
+        return;
+    }
+
+    if (logList.querySelector('.empty-logs')) {
+        logList.innerHTML = '';
+    }
+
+    const now = new Date();
+    const timeString = now.toLocaleTimeString();
+
+    // Monta o texto do log de conversão
+    let texto = `Cotação ${conversao.modela} em ${conversao.dataCotacao}: ` +
+        `venda=${conversao.contacaoRealMoeda} (1/${conversao.contacaoRealMoedaInversa.toFixed(6)}) | ` +
+        `compra=${conversao.contacaoMoedaReal} (1/${conversao.contacaoMoedaRealInversa.toFixed(6)})`;
+
+    // Clonar template
+    const li = logTemplate.content.firstElementChild.cloneNode(true);
+    li.querySelector('.log-value').textContent = texto;
+    li.querySelector('.log-time').textContent = timeString;
+    li.style.backgroundColor = getRandomTranslucentColor();
+
+    li.querySelector('.delete-log').addEventListener('click', function () {
+        li.remove();
+        if (logList.children.length === 0) {
+            logList.innerHTML = '<li class="empty-logs">Nenhum registro ainda. Digite algo no campo acima.</li>';
+        }
+        saveLogsToStorage();
+    });
+
+    logList.prepend(li);
+    saveLogsToStorage();
+}
 
 // Função para salvar logs no localStorage
 function saveLogsToStorage() {

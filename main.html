@@ -85,13 +85,11 @@
                 const dataFormatada = `${mes}-${dia}-${ano}`;
                 processarCotacaoMoeda(moeda, dataFormatada).then(result => {
                     console.log(result);
-                    let textoLog;
                     if (result.success && result.data) {
-                        textoLog = `Cotação ${moeda} em ${val}: venda=${result.data.contacaoRealMoeda} compra=${result.data.contacaoMoedaReal}`;
+                        addLogConversao(result.data);
                     } else {
-                        textoLog = `Falha ao obter cotação de ${moeda} em ${val}: ${result.message}`;
+                        addLog(`Falha ao obter cotação de ${moeda} em ${val}: ${result.message}`);
                     }
-                    addLog(textoLog);
                 });
             }
             dataInput.addEventListener('change', chamarCotacao);
