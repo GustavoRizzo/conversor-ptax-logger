@@ -76,8 +76,14 @@ function addLogConversao(conversao) {
         contacaoRealMoedaInversa: conversao.contacaoRealMoedaInversa.toFixed(6),
         contacaoMoedaReal: conversao.contacaoMoedaReal,
         contacaoMoedaRealInversa: conversao.contacaoMoedaRealInversa.toFixed(6),
+        valor: conversao.valor.toFixed(2),
+        valorRealMoeda: conversao.valorRealMoeda.toFixed(4),
+        valorRealMoedaInversa: conversao.valorRealMoedaInversa.toFixed(4),
+        valorMoedaReal: conversao.valorMoedaReal.toFixed(4),
+        valorMoedaRealInversa: conversao.valorMoedaRealInversa.toFixed(4),
         timeString: timeString
     };
+    console.log("Dados para preencher o log:", dataToFill);
     // Usa querySelectorAll para encontrar TODOS os elementos com o atributo 'data-field'
     const elementsToFill = li.querySelectorAll('[data-field]');
     // Itera sobre a lista de elementos e preenche cada um
@@ -199,7 +205,7 @@ function loadLogsFromStorage() {
 }
 
 // Função para processar cotação de moeda PTAX
-async function processarCotacaoMoeda(codigoMoeda, dataCotacao) {
+async function processarCotacaoMoeda(codigoMoeda, dataCotacao, valor = 1) {
     try {
         // Instanciar a API do Banco Central (browser)
         if (typeof window.BancoCentralAPI !== 'function') {
@@ -229,6 +235,11 @@ async function processarCotacaoMoeda(codigoMoeda, dataCotacao) {
                 contacaoRealMoedaInversa: cotacaoRealMoedaInversa,
                 contacaoMoedaReal: cotacaoMoedaReal,
                 contacaoMoedaRealInversa: cotacaoMoedaRealInversa,
+                valor: valor,
+                valorRealMoeda: cotacaoRealMoeda * valor,
+                valorRealMoedaInversa: cotacaoRealMoedaInversa * valor,
+                valorMoedaReal: cotacaoMoedaReal * valor,
+                valorMoedaRealInversa: cotacaoMoedaRealInversa * valor,
                 dadosOriginais: cotacaoPTAX
             },
             timestamp: resultado.timestamp,

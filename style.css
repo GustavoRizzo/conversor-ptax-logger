@@ -1,3 +1,19 @@
+input[type="number"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    background: #fff;
+}
+
+input[type="number"]:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
 .input-group {
     display: flex;
     flex-direction: column;
@@ -16,10 +32,6 @@
     gap: 16px;
 }
 
-.input-fields > :first-child {
-    flex: 1 1 0;
-    min-width: 0;
-}
 
 .input-fields label {
     font-weight: 600;
@@ -57,7 +69,7 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     background-color: white;
     border-radius: 10px;

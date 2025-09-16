@@ -9,11 +9,20 @@
             <div class="boxes-container" style="display: flex; gap: 32px;">
                 <div class="box-conversao">
                     <h4>Real &rarr; <span data-field="moeda"></span></h4>
-                    <strong>Taxa:</strong> <span data-field="contacaoRealMoeda"></span><br>
-                </div>
+                    <strong>Valor a converter:</strong> R$<span data-field="valor"></span><br>
+                    <strong>Resultado conversão:</strong> <span data-field="valorRealMoedaInversa"></span> <span data-field="moeda"></span><br>
+                    <strong>Data cotação utilizada:</strong> <span data-field="dataCotacao"></span><br>
+                    <strong>Taxa:</strong><br>
+                    <strong> - BRL/<span data-field="moeda"></span></strong> <span data-field="contacaoRealMoedaInversa"></span><br>
+                    <strong> - <span data-field="moeda"></span>/BRL </strong> <span data-field="contacaoRealMoeda"></span><br>                </div>
                 <div class="box-conversao">
                     <h4><span data-field="moeda"></span> &rarr; Real</h4>
-                    <strong>Taxa:</strong> <span data-field="contacaoMoedaRealInversa"></span>
+                    <strong>Valor a converter:</strong> <span data-field="valor"></span> <span data-field="moeda"></span><br>
+                    <strong>Resultado conversão:</strong> R$<span data-field="valorMoedaReal"></span><br>
+                    <strong>Data cotação utilizada:</strong> <span data-field="dataCotacao"></span><br>
+                    <strong>Taxa:</strong><br>
+                    <strong> - <span data-field="moeda"></span>/BRL </strong> <span data-field="contacaoMoedaReal"></span><br>
+                    <strong> - BRL/<span data-field="moeda"></span></strong> <span data-field="contacaoMoedaRealInversa"></span><br>
                 </div>
             </div>
         </div>
