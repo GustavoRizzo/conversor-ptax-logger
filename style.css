@@ -298,3 +298,23 @@ button:active {
 .btn-green:hover .icon {
     transform: rotate(360deg) scale(1.2);
 }
+
+  /* Contact */
+
+  .list_contato {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 12px;
+    margin-top: 24px;
+
+    .linkedin {
+      width: 30px;
+      border-radius: 15%;
+    }
+
+    .github {
+      width: 30px;
+      border-radius: 15%;
+    }
+  }
