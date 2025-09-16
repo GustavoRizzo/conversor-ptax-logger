@@ -68,14 +68,29 @@ function addLogConversao(conversao) {
 
     // Clonar template
     const li = logConversaoTemplate.content.firstElementChild.cloneNode(true);
-    // Preencher campos do template
-    li.querySelector('.log-moeda').textContent = conversao.modela;
-    li.querySelector('.log-data').textContent = conversao.dataCotacao.split(' ')[0];
-    li.querySelector('.log-venda').textContent = conversao.contacaoRealMoeda;
-    li.querySelector('.log-venda-inversa').textContent = conversao.contacaoRealMoedaInversa.toFixed(6);
-    li.querySelector('.log-compra').textContent = conversao.contacaoMoedaReal;
-    li.querySelector('.log-compra-inversa').textContent = conversao.contacaoMoedaRealInversa.toFixed(6);
-    li.querySelector('.log-time').textContent = timeString;
+    // Mapeamento dos campos para as propriedades do objeto conversao
+    const dataToFill = {
+        moeda: conversao.moeda,
+        dataCotacao: conversao.dataCotacao.split(' ')[0],
+        contacaoRealMoeda: conversao.contacaoRealMoeda,
+        contacaoRealMoedaInversa: conversao.contacaoRealMoedaInversa.toFixed(6),
+        contacaoMoedaReal: conversao.contacaoMoedaReal,
+        contacaoMoedaRealInversa: conversao.contacaoMoedaRealInversa.toFixed(6),
+        timeString: timeString
+    };
+    // Usa querySelectorAll para encontrar TODOS os elementos com o atributo 'data-field'
+    const elementsToFill = li.querySelectorAll('[data-field]');
+    // Itera sobre a lista de elementos e preenche cada um
+    elementsToFill.forEach(element => {
+        // Obtém o nome do campo a partir do atributo data-field
+        const fieldName = element.dataset.field;
+
+        // Verifica se o dado existe no nosso objeto 'dataToFill'
+        if (dataToFill[fieldName] !== undefined) {
+            // Preenche o conteúdo do elemento
+            element.textContent = dataToFill[fieldName];
+        }
+    });
     li.style.backgroundColor = getRandomTranslucentColor();
 
     li.querySelector('.delete-log').addEventListener('click', function () {
@@ -210,7 +225,7 @@ async function processarCotacaoMoeda(codigoMoeda, dataCotacao) {
         return {
             success: true,
             data: {
-                modela: codigoMoeda,
+                moeda: codigoMoeda,
                 dataCotacao: cotacaoPTAX.dataHoraCotacao,
                 contacaoRealMoeda: cotacaoRealMoeda,
                 contacaoRealMoedaInversa: cotacaoRealMoedaInversa,
