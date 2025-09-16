@@ -184,6 +184,7 @@ function loadLogsFromStorage() {
         });
         logs.forEach(log => {
             const li = document.createElement('li');
+            li.classList.add('log-container');
             li.innerHTML = `
                 <span class="log-value">${log.value}</span>
                 <div class="delete-container">
