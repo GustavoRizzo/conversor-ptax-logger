@@ -110,7 +110,6 @@
                 const [ano, mes, dia] = val.split('-');
                 const dataFormatada = `${mes}-${dia}-${ano}`;
                 processarCotacaoMoeda(moeda, dataFormatada, valor).then(result => {
-                    console.log(result);
                     if (result.success && result.data) {
                         addLogConversao(result.data);
                     } else {
@@ -121,6 +120,14 @@
             dataInput.addEventListener('change', chamarCotacao);
             moedaInput.addEventListener('change', chamarCotacao);
             document.getElementById('reloadCotacao').addEventListener('click', chamarCotacao);
+            const valorInput = document.getElementById('valorMonetario');
+            valorInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    chamarCotacao();
+                }
+            });
+            valorInput.addEventListener('change', chamarCotacao);
+            valorInput.addEventListener('blur', chamarCotacao);
 
             // Faz a invocação inicial
             chamarCotacao();

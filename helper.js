@@ -53,7 +53,6 @@ function addLog(value) {
 
 // Função para adicionar um log de conversão de moeda
 function addLogConversao(conversao) {
-    console.log("Adicionando log de conversão:", conversao);
     if (!logConversaoTemplate) {
         console.error("Template ainda não carregado");
         return;
@@ -78,12 +77,12 @@ function addLogConversao(conversao) {
         contacaoMoedaRealInversa: conversao.contacaoMoedaRealInversa.toFixed(6),
         valor: conversao.valor.toFixed(2),
         valorRealMoeda: conversao.valorRealMoeda.toFixed(4),
-        valorRealMoedaInversa: conversao.valorRealMoedaInversa.toFixed(4),
-        valorMoedaReal: conversao.valorMoedaReal.toFixed(4),
+        valorRealMoedaInversa: conversao.valorRealMoedaInversa.toFixed(2),
+        valorMoedaReal: conversao.valorMoedaReal.toFixed(2),
         valorMoedaRealInversa: conversao.valorMoedaRealInversa.toFixed(4),
         timeString: timeString
     };
-    console.log("Dados para preencher o log:", dataToFill);
+    //console.log("Dados para preencher o log:", dataToFill);
     // Usa querySelectorAll para encontrar TODOS os elementos com o atributo 'data-field'
     const elementsToFill = li.querySelectorAll('[data-field]');
     // Itera sobre a lista de elementos e preenche cada um
