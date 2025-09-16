@@ -111,16 +111,12 @@ function saveLogsToStorage() {
     document.querySelectorAll('#logList li').forEach(li => {
         if (!li.classList.contains('empty-logs')) {
             // Detecta se é um log de conversão ou log de texto
-            if (li.querySelector('.log-moeda')) {
+            if (li.querySelector('.content-container-conversao')) {
+                // Salva os dados no formato esperado por addLogConversao
                 logs.push({
-                    moeda: li.querySelector('.log-moeda').textContent,
-                    dataCotacao: li.querySelector('.log-data').textContent,
-                    venda: li.querySelector('.log-venda').textContent,
-                    vendaInversa: li.querySelector('.log-venda-inversa').textContent,
-                    compra: li.querySelector('.log-compra').textContent,
-                    compraInversa: li.querySelector('.log-compra-inversa').textContent,
-                    time: li.querySelector('.log-time').textContent,
-                    tipo: 'conversao'
+                    tipo: 'conversao',
+                    value: li.querySelector('.content-container-conversao').outerHTML,
+                    time: li.querySelector('.log-time').textContent
                 });
             } else {
                 logs.push({
@@ -184,8 +180,10 @@ function loadLogsFromStorage() {
             const li = document.createElement('li');
             li.innerHTML = `
                 <span class="log-value">${log.value}</span>
-                <span class="log-time">${log.time}</span>
-                <button class="delete-log" title="Apagar log" style="background:#e74c3c;color:#fff;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;margin-left:10px;">Apagar</button>
+                <div class="delete-container">
+                    <span class="log-time" data-field="timeString">${log.time}</span>
+                    <button class="delete-log" title="Apagar log">Apagarx</button>
+                </div>
             `;
             li.style.backgroundColor = getRandomTranslucentColor();
             li.querySelector('.delete-log').addEventListener('click', function () {
