@@ -1,5 +1,6 @@
 
 let logTemplate = null;
+let logConversaoTemplate = null;
 
 // Carregar template externo (só uma vez)
 fetch("log-template.html")
