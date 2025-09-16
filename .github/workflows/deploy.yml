@@ -26,6 +26,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-# Para funcionar, ative GitHub Pages na branch 'gh-pages' nas configurações do repositório.
-# A página inicial será main.html.
