@@ -182,7 +182,7 @@ function loadLogsFromStorage() {
                 <span class="log-value">${log.value}</span>
                 <div class="delete-container">
                     <span class="log-time" data-field="timeString">${log.time}</span>
-                    <button class="delete-log" title="Apagar log">Apagarx</button>
+                    <button class="delete-log" title="Apagar log">Apagar</button>
                 </div>
             `;
             li.style.backgroundColor = getRandomTranslucentColor();

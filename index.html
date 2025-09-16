@@ -35,8 +35,12 @@
                     <label for="dataCotacao">Data da cotação:</label>
                     <input type="date" id="dataCotacao">
                 </div>
+                <div class="input-group refresh">
+                    <button class="button-refresh btn-green" id="reloadCotacao" class="botao-recarregar">
+                        <img class="icon" src="https://htmlacademy.ru/assets/icons/reload-6x-white.png">
+                    </button>
+                </div>
             </div>
-            <div class="status" id="status"></div>
         </div>
 
         <div class="logs-container">
@@ -94,6 +98,7 @@
             }
             dataInput.addEventListener('change', chamarCotacao);
             moedaInput.addEventListener('change', chamarCotacao);
+            document.getElementById('reloadCotacao').addEventListener('click', chamarCotacao);
 
             // Faz a invocação inicial
             chamarCotacao();
